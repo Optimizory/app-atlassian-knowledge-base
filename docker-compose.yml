@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     image: pgvector/pgvector:pg16
     restart: unless-stopped
     volumes:
@@ -20,7 +20,7 @@ services:
     image: ghcr.io/optimizory/app-atlassian-knowledge-base-backend:${APP_VERSION:-latest}
     restart: unless-stopped
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     env_file:
       - .env
