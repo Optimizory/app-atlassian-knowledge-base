@@ -1,0 +1,40 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    volumes:
+      - kb_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kb_network
+
+  app:
+    image: ghcr.io/optimizory/app-atlassian-knowledge-base-backend:${APP_VERSION:-latest}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8100:8000"
+    volumes:
+      - audio_data:/app/audio
+    networks:
+      - kb_network
+
+volumes:
+  kb_postgres_data:
+  audio_data:
+
+networks:
+  kb_network:
+    driver: bridge
