@@ -10,7 +10,6 @@ Self-hosted RAG chat assistant for Atlassian apps (Jira, Confluence). Built by O
 |-------------|---------|-------|
 | Docker | 24+ | |
 | Docker Compose | v2 (plugin) | `docker compose`, not `docker-compose` |
-| Python 3 | 3.8+ | For secret generation and license key management |
 | RAM | 2 GB | 4 GB recommended |
 | Disk | 10 GB free | Database and audio files |
 | Outbound HTTPS | Required | Anthropic API, Google GenAI, Atlassian Cloud |
@@ -39,34 +38,26 @@ cd /opt/kb-platform
 
 ```bash
 # POSTGRES_PASSWORD
-python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+openssl rand -base64 24 | tr -d '=\n'
 
 # JWT_SECRET
-python3 -c "import secrets; print(secrets.token_urlsafe(64))"
+openssl rand -base64 48 | tr -d '=\n'
 
-# FERNET_KEY
-python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+# FERNET_KEY  (must be url-safe base64 of exactly 32 bytes)
+openssl rand -base64 32 | tr '+/' '-_'
 
 # ADMIN_PASSWORD
-python3 -c "import secrets; print(secrets.token_urlsafe(16))"
-
-# LICENSE_HMAC_SECRET
-python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+openssl rand -base64 12 | tr -d '=\n'
 ```
 
 Or generate all at once:
 
 ```bash
-python3 - <<'EOF'
-import secrets
-from cryptography.fernet import Fernet
-
-print("POSTGRES_PASSWORD=   " + secrets.token_urlsafe(32))
-print("JWT_SECRET=          " + secrets.token_urlsafe(64))
-print("FERNET_KEY=          " + Fernet.generate_key().decode())
-print("ADMIN_PASSWORD=      " + secrets.token_urlsafe(16))
-print("LICENSE_HMAC_SECRET= " + secrets.token_urlsafe(32))
-EOF
+printf "POSTGRES_PASSWORD=%s\nJWT_SECRET=%s\nFERNET_KEY=%s\nADMIN_PASSWORD=%s\n" \
+  "$(openssl rand -base64 24 | tr -d '=\n')" \
+  "$(openssl rand -base64 48 | tr -d '=\n')" \
+  "$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '\n')" \
+  "$(openssl rand -base64 12 | tr -d '=\n')"
 ```
 
 ### 3. Create .env
