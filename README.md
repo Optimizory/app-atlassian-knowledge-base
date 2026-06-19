@@ -131,7 +131,7 @@ Click **Test LLM** before saving.
 | Gemini API Key 1 | Your key from aistudio.google.com — used for embeddings |
 | Confluence Base URL | `https://yourorg.atlassian.net/wiki` |
 | Confluence Email | Service account email |
-| Confluence API Token | Token from id.atlassian.com → Security → API tokens |
+| Confluence API Token | https://id.atlassian.com/manage-profile/security/api-tokens |
 
 Click **Test Confluence** and **Test Gemini Embedding** to verify each connection.
 
