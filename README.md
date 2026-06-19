@@ -20,26 +20,9 @@ Self-hosted RAG chat assistant for Atlassian apps (Jira, Confluence). Built by O
 
 ## Getting a License Key
 
-License keys are time-bound HMAC tokens generated with your `LICENSE_HMAC_SECRET`. Generate one after you have created `.env`:
+License keys are issued by Optimizory. Contact [support@optimizory.com](mailto:support@optimizory.com) to obtain a key for your deployment.
 
-```bash
-export LICENSE_HMAC_SECRET=$(grep LICENSE_HMAC_SECRET .env | cut -d= -f2)
-
-python3 tools/generate_license.py \
-  --email admin@yourcompany.com \
-  --days 365 \
-  --verify
-```
-
-Output:
-
-```
-OTPLLK-eyJlbWFpbC...
-
-Validation: {'valid': True, 'status': 'active', 'email': 'admin@yourcompany.com', 'days_remaining': 365}
-```
-
-Copy the `OTPLLK-…` key. You will paste it in the Admin UI after first login.
+Once you have a key (`OTPLLK-…`), paste it in **Admin → Settings → License** after first login.
 
 ---
 
@@ -101,8 +84,6 @@ Required variables:
 | `FERNET_KEY` | Generated above |
 | `ADMIN_EMAIL` | Your admin login email |
 | `ADMIN_PASSWORD` | Generated above |
-| `LICENSE_HMAC_SECRET` | Generated above — back up separately; losing it invalidates all license keys |
-
 Optional variables:
 
 | Variable | Default | Description |
@@ -221,13 +202,7 @@ To roll back: set `APP_VERSION` to the prior tag and run `docker compose up -d`.
 
 ## License Renewal
 
-Generate a new key with an updated `--days` value:
-
-```bash
-python3 tools/generate_license.py \
-  --email admin@yourcompany.com \
-  --days 365
-```
+Contact [support@optimizory.com](mailto:support@optimizory.com) to obtain a renewed key.
 
 Paste the new key in **Admin → Settings → License**. The old key is overwritten immediately.
 
@@ -304,6 +279,4 @@ docker compose stop app
 gunzip -c kb_backup_20260619.sql.gz | docker compose exec -T db psql -U kb knowledge_base
 docker compose start app
 
-# Generate license key
-python3 tools/generate_license.py --email admin@yourcompany.com --days 365
 ```
