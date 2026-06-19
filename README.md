@@ -128,12 +128,19 @@ Click **Test LLM** before saving.
 
 | Setting | Value |
 |---------|-------|
-| Gemini API Key 1 | Your key from aistudio.google.com — used for embeddings |
 | Confluence Base URL | `https://yourorg.atlassian.net/wiki` |
 | Confluence Email | Your email used to access Atlassian marketplace data |
 | Confluence API Token | https://id.atlassian.com/manage-profile/security/api-tokens |
 
-Click **Test Confluence** and **Test Gemini Embedding** to verify each connection.
+Click **Test Confluence** to verify the connection.
+
+**Google**
+
+| Setting | Value |
+|---------|-------|
+| Gemini API Key 1 | Your key from aistudio.google.com — used for embeddings |
+
+Click **Test Gemini Embedding** to verify.
 
 **License**
 
@@ -217,7 +224,7 @@ License states:
 | App not loading in browser | Confirm nginx `proxy_pass` points to `127.0.0.1:8100`; check `proxy_read_timeout 120s` |
 | "No license key configured" banner | Admin → Settings → License — save the key, then reload the page |
 | Confluence sync fails | Admin → Settings → Test Confluence; verify the space key matches exactly in Confluence → Space Settings |
-| Embeddings 429 errors | Add more Gemini API keys in Admin → Settings → API Credentials (Key 2, Key 3, …) |
+| Embeddings 429 errors | Add more Gemini API keys in Admin → Settings → Google (Key 2, Key 3, …) |
 | Clock-skew license errors | `date` on server — sync with `timedatectl set-ntp true` |
 | Forgot admin password | Run the reset command below |
 
