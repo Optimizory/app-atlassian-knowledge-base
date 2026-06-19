@@ -138,7 +138,7 @@ Click **Test Confluence** to verify the connection.
 
 | Setting | Value |
 |---------|-------|
-| Gemini API Key 1 | Your key from aistudio.google.com — used for embeddings |
+| Gemini API Key 1 | https://aistudio.google.com/api-keys — used for embeddings |
 
 Click **Test Gemini Embedding** to verify.
 
